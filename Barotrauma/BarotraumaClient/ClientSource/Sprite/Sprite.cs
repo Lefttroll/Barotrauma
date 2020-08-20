@@ -198,8 +198,7 @@ namespace Barotrauma
             }
         }
 
-        public void DrawTiled(SpriteBatch spriteBatch, Vector2 position, Vector2 targetSize,
-            Color? color = null, Vector2? startOffset = null, Vector2? textureScale = null, float? depth = null)
+        public void DrawTiled(SpriteBatch spriteBatch, Vector2 position, Vector2 targetSize, Color? color = null, Vector2? startOffset = null, Vector2? textureScale = null, float? depth = null, float rotation = 0)
         {
             if (Texture == null) { return; }
             //Init optional values
@@ -215,7 +214,7 @@ namespace Barotrauma
             drawOffset.Y = (drawOffset.Y / scale.Y) % sourceRect.Height;
             if (flipHorizontal)
             {
-                float diff =  targetSize.X % (sourceRect.Width * scale.X);
+                float diff = targetSize.X % (sourceRect.Width * scale.X);
                 drawOffset.X += (sourceRect.Width * scale.X - diff) / scale.X;
             }
             if (flipVertical)
@@ -223,7 +222,7 @@ namespace Barotrauma
                 float diff = targetSize.Y % (sourceRect.Height * scale.Y);
                 drawOffset.Y += (sourceRect.Height * scale.Y - diff) / scale.Y;
             }
-            
+
             //how many times the texture needs to be drawn on the x-axis
             int xTiles = (int)Math.Ceiling((targetSize.X + drawOffset.X * scale.X) / (sourceRect.Width * scale.X));
             //how many times the texture needs to be drawn on the y-axis
@@ -234,7 +233,7 @@ namespace Barotrauma
             //which part of the texture we are currently drawing
             Rectangle texPerspective = sourceRect;
 
-            
+
             for (int x = 0; x < xTiles; x++)
             {
                 texPerspective.X = sourceRect.X;
@@ -264,13 +263,12 @@ namespace Barotrauma
                         Rectangle sliceRect = texPerspective;
                         sliceRect.X = SourceRect.X;
                         sliceRect.Width = (int)(sliceWidth / scale.X);
-                        
+
                         if (flipVertical)
                         {
                             slicePos.Y += size.Y;
                         }
-                        
-                        spriteBatch.Draw(texture, slicePos, sliceRect, drawColor, rotation, Vector2.Zero, scale, effects, depth ?? this.depth);                        
+                        spriteBatch.Draw(texture, slicePos, sliceRect, drawColor, rotation, Vector2.Zero, scale, effects, depth ?? this.depth);
                         currDrawPosition.X = slicePos.X + sliceWidth;
                     }
                 }
@@ -284,7 +282,7 @@ namespace Barotrauma
                         texPerspective.X += diff;
                     }
                 }
-                
+
                 currDrawPosition.Y = position.Y - drawOffset.Y;
 
                 for (int y = 0; y < yTiles; y++)
@@ -343,6 +341,7 @@ namespace Barotrauma
                 currDrawPosition.X += texPerspective.Width * scale.X;
             }
         }
+
 
         partial void DisposeTexture()
         {
