@@ -19,7 +19,23 @@ namespace Barotrauma
         private List<ConvexHull> convexHulls;
 
         private readonly Dictionary<DecorativeSprite, DecorativeSprite.State> spriteAnimState = new Dictionary<DecorativeSprite, DecorativeSprite.State>();
+        public float SpriteRotation;
 
+        private float rotation;
+
+        [Editable(0.0f, 360.0f, DecimalCount = 1, ValueStep = 1f), Serialize(0.0f, true)]
+        public float Rotation
+        {
+            get
+            {
+                return MathHelper.ToDegrees(rotation);
+            }
+            set
+            {
+             
+                rotation = MathHelper.ToRadians(value);
+            }
+        }
         public override bool SelectableInEditor
         {
             get
@@ -79,7 +95,7 @@ namespace Barotrauma
             }
             convexHulls.Add(h);
         }
-
+ 
         public override void UpdateEditing(Camera cam)
         {
             if (editingHUD == null || editingHUD.UserData as Structure != this)
@@ -229,16 +245,15 @@ namespace Barotrauma
             Color color = IsHighlighted ? GUI.Style.Orange : spriteColor;
             if (IsSelected && editing)
             {
-                //color = Color.Lerp(color, Color.Gold, 0.5f);
+               //color = Color.Lerp(color, Color.Gold, 0.5f);
                 color = spriteColor;
-
                 Vector2 rectSize = rect.Size.ToVector2();
                 if (BodyWidth > 0.0f) { rectSize.X = BodyWidth; }
                 if (BodyHeight > 0.0f) { rectSize.Y = BodyHeight; }
 
                 Vector2 bodyPos = WorldPosition + BodyOffset;
 
-                GUI.DrawRectangle(spriteBatch, new Vector2(bodyPos.X, -bodyPos.Y), rectSize.X, rectSize.Y, BodyRotation, Color.White, 
+                GUI.DrawRectangle(spriteBatch, new Vector2(bodyPos.X, -bodyPos.Y), rectSize.X, rectSize.Y, rotation + BodyRotation, Color.White,
                     thickness: Math.Max(1, (int)(2 / Screen.Selected.Cam.Zoom)));
             }
 
@@ -288,6 +303,7 @@ namespace Barotrauma
                         color: Prefab.BackgroundSpriteColor,
                         textureScale: TextureScale * Scale,
                         startOffset: backGroundOffset,
+                        rotation: rotation,
                         depth: Math.Max(Prefab.BackgroundSprite.Depth + (ID % 255) * 0.000001f, depth + 0.000001f));
 
                     if (UseDropShadow)
@@ -299,6 +315,7 @@ namespace Barotrauma
                             color: Color.Black * 0.5f,
                             textureScale: TextureScale * Scale,
                             startOffset: backGroundOffset,
+                            rotation: rotation,
                             depth: (depth + Prefab.BackgroundSprite.Depth) / 2.0f);
                     }
 
@@ -345,6 +362,7 @@ namespace Barotrauma
                         new Vector2(Sections[i].rect.X + drawOffset.X, -(Sections[i].rect.Y + drawOffset.Y)),
                         new Vector2(Sections[i].rect.Width, Sections[i].rect.Height),
                         color: color,
+                        rotation: rotation,
                         startOffset: sectionOffset,
                         depth: depth,
                         textureScale: TextureScale * Scale);
