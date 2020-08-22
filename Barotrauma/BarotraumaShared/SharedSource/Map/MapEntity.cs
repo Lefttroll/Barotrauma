@@ -107,6 +107,14 @@ namespace Barotrauma
             get { return false; }
         }
 
+        private float rotation;
+
+        public virtual float Rotation
+        {
+            get => rotation;
+            set => rotation = value;
+        }
+
         public List<string> AllowedLinks => prefab == null ? new List<string>() : prefab.AllowedLinks;
 
         public bool ResizeHorizontal
