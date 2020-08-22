@@ -198,13 +198,14 @@ namespace Barotrauma
             }
         }
 
-        public void DrawTiled(SpriteBatch spriteBatch, Vector2 position, Vector2 targetSize, Color? color = null, Vector2? startOffset = null, Vector2? textureScale = null, float? depth = null, float rotation = 0)
+        public void DrawTiled(SpriteBatch spriteBatch, Vector2 position, Vector2 targetSize, Color? color = null, Vector2? startOffset = null, Vector2? textureScale = null, float? depth = null, float rotation = 0, Vector2? startOrigin = null)
         {
             if (Texture == null) { return; }
             //Init optional values
             Vector2 drawOffset = startOffset ?? Vector2.Zero;
             Vector2 scale = textureScale ?? Vector2.One;
             Color drawColor = color ?? Color.White;
+            Vector2 origin = startOrigin ?? Vector2.Zero;
 
             bool flipHorizontal = (effects & SpriteEffects.FlipHorizontally) != 0;
             bool flipVertical = (effects & SpriteEffects.FlipVertically) != 0;
@@ -268,7 +269,7 @@ namespace Barotrauma
                         {
                             slicePos.Y += size.Y;
                         }
-                        spriteBatch.Draw(texture, slicePos, sliceRect, drawColor, rotation, Vector2.Zero, scale, effects, depth ?? this.depth);
+                        spriteBatch.Draw(texture, slicePos, sliceRect, drawColor, rotation, origin, scale, effects, depth ?? this.depth);
                         currDrawPosition.X = slicePos.X + sliceWidth;
                     }
                 }
@@ -315,7 +316,7 @@ namespace Barotrauma
                             sliceRect.Y = SourceRect.Y;
                             sliceRect.Height = (int)(sliceHeight / scale.Y);
 
-                            spriteBatch.Draw(texture, slicePos, sliceRect, drawColor, rotation, Vector2.Zero, scale, effects, depth ?? this.depth);
+                            spriteBatch.Draw(texture, slicePos, sliceRect, drawColor, rotation, origin, scale, effects, depth ?? this.depth);
 
                             currDrawPosition.Y = slicePos.Y + sliceHeight;
                         }
@@ -333,7 +334,7 @@ namespace Barotrauma
                     }
 
                     spriteBatch.Draw(texture, currDrawPosition,
-                        texPerspective, drawColor, rotation, Vector2.Zero, scale, effects, depth ?? this.depth);
+                        texPerspective, drawColor, rotation, origin, scale, effects, depth ?? this.depth);
 
                     currDrawPosition.Y += texPerspective.Height * scale.Y;
                 }
