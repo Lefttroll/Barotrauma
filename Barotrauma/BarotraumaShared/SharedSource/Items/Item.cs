@@ -170,7 +170,7 @@ namespace Barotrauma
         private float rotation;
 
         [Editable(0.0f, 360.0f, DecimalCount = 1, ValueStep = 1f), Serialize(0.0f, true)]
-        public float Rotation
+        public override float Rotation
         {
             get
             {

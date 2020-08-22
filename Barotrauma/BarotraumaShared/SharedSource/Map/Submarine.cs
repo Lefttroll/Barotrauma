@@ -240,7 +240,7 @@ namespace Barotrauma
         {
             Info.Type = SubmarineType.Wreck;
             ShowSonarMarker = false;
-            PhysicsBody.FarseerBody.BodyType = BodyType.Static;
+            PhysicsBody.FarseerBody.BodyType = BodyType.Dynamic;
             TeamID = Character.TeamType.None;
 
             string defaultTag = Level.Loaded.GetWreckIDTag("wreck_id", this);

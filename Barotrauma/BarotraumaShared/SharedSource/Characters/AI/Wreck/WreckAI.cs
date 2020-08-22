@@ -375,7 +375,7 @@ namespace Barotrauma
                 // Never target other creatures than humans with the turrets.
                 turret.ThalamusOperate(this, deltaTime, 
                     !turret.Item.HasTag("ignorecharacters"), 
-                    targetOtherCreatures: false, 
+                    targetOtherCreatures: true, 
                     !turret.Item.HasTag("ignoresubmarines"), 
                     turret.Item.HasTag("ignoreaimdelay"));
             }
