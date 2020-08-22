@@ -202,7 +202,7 @@ namespace Barotrauma
         {
             if (Texture == null) { return; }
             //Init optional values
-            Vector2 drawOffset = startOffset.HasValue ? startOffset.Value : Vector2.Zero;
+            Vector2 drawOffset = startOffset ?? Vector2.Zero;
             Vector2 scale = textureScale ?? Vector2.One;
             Color drawColor = color ?? Color.White;
 
