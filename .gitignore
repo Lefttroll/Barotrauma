@@ -42,3 +42,9 @@ desktop.ini
 
 #Merge script
 temp.txt
+
+# Rider
+.idea/
+
+# Secret Stuff
+Content/
