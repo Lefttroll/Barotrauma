@@ -243,6 +243,7 @@ namespace Barotrauma
             else if (HiddenInGame) { return; }
 
             Color color = IsHighlighted ? GUI.Style.Orange : spriteColor;
+            Vector2 bodyPos = WorldPosition + BodyOffset;
             if (IsSelected && editing)
             {
                //color = Color.Lerp(color, Color.Gold, 0.5f);
@@ -251,19 +252,19 @@ namespace Barotrauma
                 if (BodyWidth > 0.0f) { rectSize.X = BodyWidth; }
                 if (BodyHeight > 0.0f) { rectSize.Y = BodyHeight; }
 
-                Vector2 bodyPos = WorldPosition + BodyOffset;
-
                 GUI.DrawRectangle(spriteBatch, new Vector2(bodyPos.X, -bodyPos.Y), rectSize.X, rectSize.Y, rotation + BodyRotation, Color.White,
                     thickness: Math.Max(1, (int)(2 / Screen.Selected.Cam.Zoom)));
             }
 
-            Vector2 drawOffset = Submarine == null ? Vector2.Zero : Submarine.DrawPosition;
+            var (offsetX, offsetY) = (Submarine?.DrawPosition ?? Vector2.Zero) + new Vector2(BodyWidth / 2, -BodyHeight / 2);
 
             float depth = GetDrawDepth();
 
             Vector2 textureOffset = this.textureOffset;
             if (FlippedX) textureOffset.X = -textureOffset.X;
             if (FlippedY) textureOffset.Y = -textureOffset.Y;
+
+            Vector2 origin = new Vector2(BodyWidth, BodyHeight);
 
             if (back && damageEffect == null)
             {
@@ -298,25 +299,27 @@ namespace Barotrauma
 
                     Prefab.BackgroundSprite.DrawTiled(
                         spriteBatch,
-                        new Vector2(rect.X + drawOffset.X, -(rect.Y + drawOffset.Y)),
+                        new Vector2(rect.X + offsetX, -(rect.Y + offsetY)),
                         new Vector2(rect.Width, rect.Height),
                         color: Prefab.BackgroundSpriteColor,
                         startOffset: backGroundOffset,
                         textureScale: TextureScale * Scale,
                         depth: Math.Max(Prefab.BackgroundSprite.Depth + (ID % 255) * 0.000001f, depth + 0.000001f),
-                        rotation: rotation);
+                        rotation: rotation,
+                        startOrigin: origin);
 
                     if (UseDropShadow)
                     {
                         Prefab.BackgroundSprite.DrawTiled(
                             spriteBatch,
-                            new Vector2(rect.X + drawOffset.X, -(rect.Y + drawOffset.Y)) + dropShadowOffset,
+                            new Vector2(rect.X + offsetX, -(rect.Y + offsetY)) + dropShadowOffset,
                             new Vector2(rect.Width, rect.Height),
                             color: Color.Black * 0.5f,
                             startOffset: backGroundOffset,
                             textureScale: TextureScale * Scale,
                             depth: (depth + Prefab.BackgroundSprite.Depth) / 2.0f,
-                            rotation: rotation);
+                            rotation: rotation,
+                            startOrigin: origin);
                     }
 
                     Prefab.BackgroundSprite.effects = oldEffects;
@@ -359,13 +362,14 @@ namespace Barotrauma
 
                     prefab.sprite.DrawTiled(
                         spriteBatch,
-                        new Vector2(Sections[i].rect.X + drawOffset.X, -(Sections[i].rect.Y + drawOffset.Y)),
+                        new Vector2(Sections[i].rect.X + offsetX, -(Sections[i].rect.Y + offsetY)),
                         new Vector2(Sections[i].rect.Width, Sections[i].rect.Height),
                         color: color,
                         startOffset: sectionOffset,
                         textureScale: TextureScale * Scale,
                         depth: depth,
-                        rotation: rotation);
+                        rotation: rotation,
+                        startOrigin: origin);
                 }
 
                 foreach (var decorativeSprite in Prefab.DecorativeSprites)
