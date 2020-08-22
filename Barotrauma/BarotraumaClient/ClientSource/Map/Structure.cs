@@ -301,10 +301,10 @@ namespace Barotrauma
                         new Vector2(rect.X + drawOffset.X, -(rect.Y + drawOffset.Y)),
                         new Vector2(rect.Width, rect.Height),
                         color: Prefab.BackgroundSpriteColor,
-                        textureScale: TextureScale * Scale,
                         startOffset: backGroundOffset,
-                        rotation: rotation,
-                        depth: Math.Max(Prefab.BackgroundSprite.Depth + (ID % 255) * 0.000001f, depth + 0.000001f));
+                        textureScale: TextureScale * Scale,
+                        depth: Math.Max(Prefab.BackgroundSprite.Depth + (ID % 255) * 0.000001f, depth + 0.000001f),
+                        rotation: rotation);
 
                     if (UseDropShadow)
                     {
@@ -313,10 +313,10 @@ namespace Barotrauma
                             new Vector2(rect.X + drawOffset.X, -(rect.Y + drawOffset.Y)) + dropShadowOffset,
                             new Vector2(rect.Width, rect.Height),
                             color: Color.Black * 0.5f,
-                            textureScale: TextureScale * Scale,
                             startOffset: backGroundOffset,
-                            rotation: rotation,
-                            depth: (depth + Prefab.BackgroundSprite.Depth) / 2.0f);
+                            textureScale: TextureScale * Scale,
+                            depth: (depth + Prefab.BackgroundSprite.Depth) / 2.0f,
+                            rotation: rotation);
                     }
 
                     Prefab.BackgroundSprite.effects = oldEffects;
@@ -362,10 +362,10 @@ namespace Barotrauma
                         new Vector2(Sections[i].rect.X + drawOffset.X, -(Sections[i].rect.Y + drawOffset.Y)),
                         new Vector2(Sections[i].rect.Width, Sections[i].rect.Height),
                         color: color,
-                        rotation: rotation,
                         startOffset: sectionOffset,
+                        textureScale: TextureScale * Scale,
                         depth: depth,
-                        textureScale: TextureScale * Scale);
+                        rotation: rotation);
                 }
 
                 foreach (var decorativeSprite in Prefab.DecorativeSprites)
